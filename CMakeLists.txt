@@ -21,6 +21,21 @@ endif(NOT CMAKE_BUILD_TYPE)
 set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include/ffts)
 set(LIB_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib)
 
+
+set(CMAKE_COMPILER_GCCLIKE OFF)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+  # using Clang
+  set(CMAKE_COMPILER_GCCLIKE ON)
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  # using GCC
+  set(CMAKE_COMPILER_GCCLIKE ON)
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+  # using Intel C++
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  # using Visual Studio C++
+endif()
+
+
 # common options
 
 # !!!! FOR TESTING ONLY !!!!
@@ -303,9 +318,9 @@ if(NOT CMAKE_CROSSCOMPILING)
     endif(NOT NEON_HARDFP_SUPPORTED AND NOT NEON_SOFTFP_SUPPORTED)
   else()
     # enable SSE code generation
-    if(CMAKE_COMPILER_IS_GNUCC)
+    if(CMAKE_COMPILER_GCCLIKE)
       set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} -msse")
-    endif(CMAKE_COMPILER_IS_GNUCC)
+    endif(CMAKE_COMPILER_GCCLIKE)
 
     # check if the platform has support for SSE intrinsics
     check_include_file(xmmintrin.h HAVE_XMMINTRIN_H)
@@ -323,9 +338,9 @@ if(NOT CMAKE_CROSSCOMPILING)
     endif(HAVE_XMMINTRIN_H)
 
     # enable SSE2 code generation
-    if(CMAKE_COMPILER_IS_GNUCC)
+    if(CMAKE_COMPILER_GCCLIKE)
       set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} -msse2")
-    endif(CMAKE_COMPILER_IS_GNUCC)
+    endif(CMAKE_COMPILER_GCCLIKE)
 
     # check if the platform has support for SSE2 intrinsics
     check_include_file(emmintrin.h HAVE_EMMINTRIN_H)
@@ -335,9 +350,9 @@ if(NOT CMAKE_CROSSCOMPILING)
     endif(HAVE_EMMINTRIN_H)
 
     # enable SSE3 code generation
-    if(CMAKE_COMPILER_IS_GNUCC)
+    if(CMAKE_COMPILER_GCCLIKE)
       set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS_SAVE} -msse3")
-    endif(CMAKE_COMPILER_IS_GNUCC)
+    endif(CMAKE_COMPILER_GCCLIKE)
 
     # check if the platform has support for SSE3 intrinsics
     check_include_file(pmmintrin.h HAVE_PMMINTRIN_H)
@@ -384,7 +399,7 @@ if(MSVC)
   set(CMAKE_DEBUG_POSTFIX "d")
 
   add_definitions(-D_USE_MATH_DEFINES)
-elseif(CMAKE_COMPILER_IS_GNUCC)
+elseif(CMAKE_COMPILER_GCCLIKE)
   include(CheckCCompilerFlag)
   include(CheckLibraryExists)
 
