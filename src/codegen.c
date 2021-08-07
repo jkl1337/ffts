@@ -118,7 +118,6 @@ transform_func_t ffts_generate_func_code(ffts_plan_t *p, size_t N, size_t leaf_N
     uint32_t  loop_count;
 
     int       count;
-    ptrdiff_t len;
 
     size_t   *ps;
     size_t   *pps;
@@ -241,7 +240,7 @@ transform_func_t ffts_generate_func_code(ffts_plan_t *p, size_t N, size_t leaf_N
     /* generate subtransform calls */
     count = 2;
     while (pps[0]) {
-        size_t ws_is;
+        int32_t ws_is;
 
         if (!pN) {
 #ifdef _M_X64
