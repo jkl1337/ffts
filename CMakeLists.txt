@@ -23,15 +23,15 @@ set(LIB_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib)
 
 
 set(CMAKE_COMPILER_GCCLIKE OFF)
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+if ("${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
   # using Clang
   set(CMAKE_COMPILER_GCCLIKE ON)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   # using GCC
   set(CMAKE_COMPILER_GCCLIKE ON)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
   # using Intel C++
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+elseif ("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
   # using Visual Studio C++
 endif()
 
@@ -427,6 +427,9 @@ elseif(CMAKE_COMPILER_GCCLIKE)
   elseif(HAVE_XMMINTRIN_H)
     add_definitions(-msse)
   endif(HAVE_PMMINTRIN_H)
+  if(ENABLE_AVX)
+    add_definitions(-mavx)
+  endif(ENABLE_AVX)
 endif(MSVC)
 
 include_directories(include)

@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 #endif
 
-#include <intrin.h>
+#include <immintrin.h>
 
 typedef __m128 V4SF;
 
